@@ -1,4 +1,4 @@
-exports.handler = async function(event) {
+export const handler = async function(event) {
   const q = event.queryStringParameters?.q;
   if (!q) return { statusCode: 400, body: JSON.stringify({ error: "q obrigatorio" }) };
 
