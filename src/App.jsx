@@ -27,7 +27,7 @@ function ProductCard({ item }) {
   const isUsed = item.condition === "used";
 
   return (
-    <a
+    
       href={item.permalink}
       target="_blank"
       rel="noopener noreferrer"
@@ -149,7 +149,7 @@ function SearchRow({ item, onRemove, onChange, onSearchSingle, canRemove }) {
           )}
           {hasResults && count === 0 && (
             <p style={{ color: "#999", fontSize: 13, margin: 0 }}>
-              Nenhum resultado encontrado. Tente termos mais amplos.
+              Nenhum resultado encontrado com bons vendedores. Tente termos mais amplos.
             </p>
           )}
           {hasResults && count > 0 && (
@@ -170,7 +170,10 @@ async function fetchML(q) {
   const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
   if (!res.ok) throw new Error("Erro na API");
   const data = await res.json();
-  return data.results || [];
+  const boas = ["5_green", "4_light_green"];
+  return (data.results || []).filter(
+    item => boas.includes(item.seller?.seller_reputation?.level_id)
+  );
 }
 
 export default function App() {
@@ -246,7 +249,7 @@ export default function App() {
             </div>
           </div>
           <p style={{ color: "#555", fontSize: 11, margin: 0, letterSpacing: "0.03em" }}>
-            Ordenado do mais barato para o mais caro.
+            Somente vendedores com boa reputacao, ordenados do mais barato para o mais caro.
           </p>
         </div>
       </div>
